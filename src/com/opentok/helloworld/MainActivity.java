@@ -140,14 +140,9 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 			@Override
 			public void run() {
-				try {
-					if (publisher.getStreamId().equals(stream.getStreamId())) {
-						subscriber = session.createSubscriber(subscriberView, stream);
-						subscriber.connect();
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (publisher.getStreamId().equals(stream.getStreamId())) {
+					subscriber = session.createSubscriber(subscriberView, stream);
+					subscriber.connect();
 				}
 			}});
 	}
@@ -160,6 +155,18 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 	@Override
 	public void onPublisherFailed() {
 		Log.e("hello-world", "publisher failed!");
+	}
+
+	@Override
+	public void onSessionDidDropStream(Stream arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSessionError() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
