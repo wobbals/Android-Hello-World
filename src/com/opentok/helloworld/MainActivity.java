@@ -97,9 +97,10 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 						camera.setPreviewDisplay(publisherView.getHolder());
 						camera.startPreview();
 
-						session = Session.newInstance("1_MX4zNDUyNjF-NzIuNS4xNjcuMTM0fldlZCBTZXAgMTkgMTU6NDk6MzQgUERUIDIwMTJ-MC45Nzc2Mjkzfg",
-								"T1==cGFydG5lcl9pZD0zNDUyNjEmc2lnPTE0Y2JiNGY2ZGUzNjkwYjJlNzUyMjI2YTdlMDA1YjhhZGUzNjA1YjY6c2Vzc2lvbl9pZD0mY3JlYXRlX3RpbWU9MTM0ODA5NDk3NCZyb2xlPW1vZGVyYXRvciZub25jZT0xMzQ4MDk0OTc0LjE3NzkxNDk0NzQyNTgmZXhwaXJlX3RpbWU9MTM0ODY5OTc3NA==",
-								"345261",
+						session = Session.newInstance(getApplicationContext(), 
+								"2_MX4xMzExMjU3MX43Mi41LjE2Ny4xNTh-VGh1IE9jdCAxOCAxNToxMzoyOCBQRFQgMjAxMn4wLjMzMjY4NDF-",
+								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9MDBjYWQ1ZWRhZjExODJiYzFiNzJhNGFhY2QzYjk5N2Q3N2Q5ZjNhYjpzZXNzaW9uX2lkPSZjcmVhdGVfdGltZT0xMzUwNTk4NDA5JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTEzNTA1OTg0MDkuMzc5ODY3ODczNzUwNyZleHBpcmVfdGltZT0xMzUxMjAzMjA5",
+								"13112571",
 								MainActivity.this);
 						session.connect();
 
@@ -158,15 +159,18 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 	}
 
 	@Override
-	public void onSessionDidDropStream(Stream arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onSessionDidDropStream(Stream stream) {
+		Log.i("hello-world", String.format("stream %d dropped", stream.toString()));
 	}
 
 	@Override
 	public void onSessionError() {
-		// TODO Auto-generated method stub
-		
+		Log.e("hello-world", "session failed!");	
+	}
+
+	@Override
+	public void onSessionDisconnected() {
+		Log.i("hello-world", "session disconnected");	
 	}
 
 }
