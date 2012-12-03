@@ -4,5 +4,10 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="opentok-android-sdk/libs/jackson-core-asl-1.9.1.jar"/>
+	<classpathentry kind="lib" path="opentok-android-sdk/libs/jackson-mapper-asl-1.9.1.jar"/>
+	<classpathentry kind="lib" path="opentok-android-sdk/libs/opentok-android-sdk.jar"/>
+	<classpathentry kind="lib" path="opentok-android-sdk/libs/slf4j-android-1.6.1-RC1.jar"/>
+	<classpathentry kind="lib" path="opentok-android-sdk/libs/tokbox-mina-core-2.0.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

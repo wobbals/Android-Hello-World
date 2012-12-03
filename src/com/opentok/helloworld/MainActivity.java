@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 						session = Session.newInstance(getApplicationContext(), 
 								"2_MX4xMzExMjU3MX43Mi41LjE2Ny4xNTh-VGh1IE9jdCAxOCAxNToxMzoyOCBQRFQgMjAxMn4wLjMzMjY4NDF-",
-								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9MDBjYWQ1ZWRhZjExODJiYzFiNzJhNGFhY2QzYjk5N2Q3N2Q5ZjNhYjpzZXNzaW9uX2lkPSZjcmVhdGVfdGltZT0xMzUwNTk4NDA5JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTEzNTA1OTg0MDkuMzc5ODY3ODczNzUwNyZleHBpcmVfdGltZT0xMzUxMjAzMjA5",
+								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9YWEzYTg1NDRkZWRjZTA1ODRmOWNkZjFmOWYwNWExZjQ0NWQ2NDZiYjpyb2xlPW1vZGVyYXRvciZzZXNzaW9uX2lkPTJfTVg0eE16RXhNalUzTVg0M01pNDFMakUyTnk0eE5UaC1WR2gxSUU5amRDQXhPQ0F4TlRveE16b3lPQ0JRUkZRZ01qQXhNbjR3TGpNek1qWTROREYtJmNyZWF0ZV90aW1lPTEzNTQ1MjUyMjUmbm9uY2U9MC42MTE3NzA1MDA0NDU2MDk4",
 								"13112571",
 								MainActivity.this);
 						session.connect();
@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 			@Override
 			public void run() {
-				publisher = session.createPublisher(camera, publisherView.getHolder().getSurface());
+				publisher = session.createPublisher(camera, publisherView.getHolder());
 				publisher.connect();
 			}});
 	}
@@ -171,6 +171,12 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 	@Override
 	public void onSessionDisconnected() {
 		Log.i("hello-world", "session disconnected");	
+	}
+
+	@Override
+	public void onPublisherDisconnected() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
