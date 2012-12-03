@@ -164,8 +164,8 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 	}
 
 	@Override
-	public void onSessionError() {
-		Log.e("hello-world", "session failed!");	
+	public void onSessionError(Exception cause) {
+		Log.e("hello-world", "session failed: "+cause.toString());	
 	}
 
 	@Override
