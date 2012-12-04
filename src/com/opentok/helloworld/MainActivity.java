@@ -1,6 +1,5 @@
 package com.opentok.helloworld;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,6 +21,12 @@ import com.opentok.Session;
 import com.opentok.Stream;
 import com.opentok.Subscriber;
 
+/**
+ * This application demonstrates the basic workflow for getting started with the OpenTok Android SDK.
+ * Currently the user is expected to provide rendering surfaces for the SDK, so we'll create
+ * SurfaceHolder instances for each component.
+ *  
+ */
 public class MainActivity extends Activity implements Publisher.Listener, Session.Listener, Callback {
 	ExecutorService executor;
 	SurfaceView publisherView;
@@ -40,15 +45,18 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 		
 		publisherView = (SurfaceView)findViewById(R.id.publisherview);
 		subscriberView = (SurfaceView)findViewById(R.id.subscriberview);
+		
+		// Although this call is deprecated, Camera preview still seems to require it :-\
 		publisherView.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-		executor = Executors.newCachedThreadPool();
+		// SurfaceHolders are not initially available, so we'll wait to create the publisher
 		publisherView.getHolder().addCallback(this);
 
-		PowerManager powerManager =
-				(PowerManager)getSystemService(Context.POWER_SERVICE);
-		wakeLock =
-				powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
+		// A simple executor will allow us to perform tasks asynchronously.
+		executor = Executors.newCachedThreadPool();
+
+		// Disable screen dimming
+		PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
 						"Full Wake Lock");
 	}
 
@@ -65,7 +73,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 		if (wakeLock.isHeld()) {
 			wakeLock.release();
 		}
-		//what else needs to get in here?
+		// Release the camera when the application is being destroyed, lest we can't acquire it again later.
 		if (null != camera) camera.release();
 	}
 
@@ -85,6 +93,9 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 		}
 	}
 
+	/**
+	 * Invoked when Our Publisher's rendering surface comes available.
+	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
 		if (publisher == null) {
@@ -93,13 +104,16 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 				@Override
 				public void run() {
 					try {
+						// This usually maps to the front camera.
 						camera = Camera.open(Camera.getNumberOfCameras() - 1);
 						camera.setPreviewDisplay(publisherView.getHolder());
+						// Note: preview will continue even if we fail to connect.
 						camera.startPreview();
 
+						// Since our Publisher is ready, go ahead and prepare session instance and connect.
 						session = Session.newInstance(getApplicationContext(), 
 								"2_MX4xMzExMjU3MX43Mi41LjE2Ny4xNTh-VGh1IE9jdCAxOCAxNToxMzoyOCBQRFQgMjAxMn4wLjMzMjY4NDF-",
-								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9YWEzYTg1NDRkZWRjZTA1ODRmOWNkZjFmOWYwNWExZjQ0NWQ2NDZiYjpyb2xlPW1vZGVyYXRvciZzZXNzaW9uX2lkPTJfTVg0eE16RXhNalUzTVg0M01pNDFMakUyTnk0eE5UaC1WR2gxSUU5amRDQXhPQ0F4TlRveE16b3lPQ0JRUkZRZ01qQXhNbjR3TGpNek1qWTROREYtJmNyZWF0ZV90aW1lPTEzNTQ1MjUyMjUmbm9uY2U9MC42MTE3NzA1MDA0NDU2MDk4",
+								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9MTViYzExMzBkM2MyM2M2Y2VjYWEyYjViZWEwOGE5MzkwOTRlODE3ZTpyb2xlPW1vZGVyYXRvciZzZXNzaW9uX2lkPTJfTVg0eE16RXhNalUzTVg0M01pNDFMakUyTnk0eE5UaC1WR2gxSUU5amRDQXhPQ0F4TlRveE16b3lPQ0JRUkZRZ01qQXhNbjR3TGpNek1qWTROREYtJmNyZWF0ZV90aW1lPTEzNTQ2MTE2MTYmbm9uY2U9MC40Nzg2MzYzMjEzOTA1OTY1Mw==",
 								"13112571",
 								MainActivity.this);
 						session.connect();
@@ -130,6 +144,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 			@Override
 			public void run() {
+				// Session is ready to publish. Create Publisher instance from our rendering surface and camera, then connect.
 				publisher = session.createPublisher(camera, publisherView.getHolder());
 				publisher.connect();
 			}});
@@ -141,6 +156,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 			@Override
 			public void run() {
+				// If this incoming stream is our own Publisher stream, let's look in the mirror.
 				if (publisher.getStreamId().equals(stream.getStreamId())) {
 					subscriber = session.createSubscriber(subscriberView, stream);
 					subscriber.connect();
@@ -175,8 +191,8 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 
 	@Override
 	public void onPublisherDisconnected() {
-		// TODO Auto-generated method stub
-		
+		Log.i("hello-world", "publisher disconnected");	
+
 	}
 
 }
