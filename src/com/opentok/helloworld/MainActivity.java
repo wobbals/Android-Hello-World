@@ -113,7 +113,7 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 						// Since our Publisher is ready, go ahead and prepare session instance and connect.
 						session = Session.newInstance(getApplicationContext(), 
 								"2_MX4xMzExMjU3MX43Mi41LjE2Ny4xNTh-VGh1IE9jdCAxOCAxNToxMzoyOCBQRFQgMjAxMn4wLjMzMjY4NDF-",
-								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9MTViYzExMzBkM2MyM2M2Y2VjYWEyYjViZWEwOGE5MzkwOTRlODE3ZTpyb2xlPW1vZGVyYXRvciZzZXNzaW9uX2lkPTJfTVg0eE16RXhNalUzTVg0M01pNDFMakUyTnk0eE5UaC1WR2gxSUU5amRDQXhPQ0F4TlRveE16b3lPQ0JRUkZRZ01qQXhNbjR3TGpNek1qWTROREYtJmNyZWF0ZV90aW1lPTEzNTQ2MTE2MTYmbm9uY2U9MC40Nzg2MzYzMjEzOTA1OTY1Mw==",
+								"T1==cGFydG5lcl9pZD0xMzExMjU3MSZzaWc9ZmFjMmIwZGI1ZjQ4NzdjY2VlOTEzYzkzN2UxNDQ2MTAwODY3Mjk0Njpyb2xlPW1vZGVyYXRvciZzZXNzaW9uX2lkPTJfTVg0eE16RXhNalUzTVg0M01pNDFMakUyTnk0eE5UaC1WR2gxSUU5amRDQXhPQ0F4TlRveE16b3lPQ0JRUkZRZ01qQXhNbjR3TGpNek1qWTROREYtJmNyZWF0ZV90aW1lPTEzNTc3MjIwNTEmbm9uY2U9MC40MzYxNzgxODY5MjMwNTI1NQ==",
 								"13112571",
 								MainActivity.this);
 						session.connect();
@@ -180,8 +180,8 @@ public class MainActivity extends Activity implements Publisher.Listener, Sessio
 	}
 
 	@Override
-	public void onSessionError() {
-		Log.e("hello-world", "session failed!");	
+	public void onSessionError(Exception cause) {
+		Log.e("hello-world", "session failed! "+cause.toString());	
 	}
 
 	@Override
